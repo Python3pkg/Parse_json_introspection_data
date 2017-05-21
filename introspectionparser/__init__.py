@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import json
 import sys
 from prettytable import PrettyTable
@@ -33,8 +33,8 @@ def display(inputlistarguments):
     options chosen from main-menu.
     '''
     if type(data[options[inputlistarguments]]) == dict:
-        x.field_names=data[options[inputlistarguments]].keys()
-        x.add_row([eachvalue for eachvalue in data[options[inputlistarguments]].values()])
+        x.field_names=list(data[options[inputlistarguments]].keys())
+        x.add_row([eachvalue for eachvalue in list(data[options[inputlistarguments]].values())])
         print(x.get_string())
     else:
         print(data[options[inputlistarguments]])
@@ -85,12 +85,12 @@ def extra_options_print(input_main_key,input_sub_key):
     elif input_sub_key == 'firmware':
         x.field_names=sorted(data[input_main_key][input_sub_key]['bios'].keys())
         x.add_row([eachvalue for eachvalue in
-                   data[input_main_key][input_sub_key]['bios'].values()])
+                   list(data[input_main_key][input_sub_key]['bios'].values())])
         print(x.get_string())
     elif input_sub_key == 'system':
         x.field_names=sorted(data[input_main_key][input_sub_key]['kernel'].keys())
         x.add_row([eachvalue for eachvalue in
-                   data[input_main_key][input_sub_key]['kernel'].values()])
+                   list(data[input_main_key][input_sub_key]['kernel'].values())])
         print(x.get_string())
 
 def inventory_options_print(input_main_key,input_sub_key):
@@ -99,14 +99,14 @@ def inventory_options_print(input_main_key,input_sub_key):
     inventory. Depending up-on type of sub-key display the results.
     '''
     if type(data[input_main_key][input_sub_key]) == list:
-        x.field_names=data[input_main_key][input_sub_key][0].keys()
+        x.field_names=list(data[input_main_key][input_sub_key][0].keys())
         for eachelement in data[input_main_key][input_sub_key]:
-            x.add_row(eachelement.values())
+            x.add_row(list(eachelement.values()))
         print(x.get_string())
     elif type(data[input_main_key][input_sub_key]) == dict:
-        x.field_names=data[input_main_key][input_sub_key].keys()
+        x.field_names=list(data[input_main_key][input_sub_key].keys())
         x.add_row([eachvalue for eachvalue in
-                   (data[input_main_key][input_sub_key].values())])
+                   (list(data[input_main_key][input_sub_key].values()))])
         print(x.get_string())
     else:
         print(data[input_main_key][input_sub_key])
@@ -121,9 +121,9 @@ def another_menu(input_values1):
         extra_options[index_extra]=value_extra
         print("{0}: {1}".format(index_extra,value_extra))
     if input_values1 == 'inventory':
-        inventory_options_print(input_values1,extra_options[int(input("Enter one numeric value: "))])
+        inventory_options_print(input_values1,extra_options[int(eval(input("Enter one numeric value: ")))])
     else:
-        extra_options_print(input_values1,extra_options[int(input("Enter one numeric value: "))])
+        extra_options_print(input_values1,extra_options[int(eval(input("Enter one numeric value: ")))])
 
 def check(input_values):
     '''
@@ -140,5 +140,5 @@ def main():
     Main menu input from user and check whether it requires nested menu or
     not.
     '''
-    inputvalues=str(input("Enter one numeric value: "))
+    inputvalues=str(eval(input("Enter one numeric value: ")))
     check(int(inputvalues))
